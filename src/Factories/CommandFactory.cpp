@@ -1,4 +1,5 @@
 #include "CommandFactory.h"
+#include "../Controllers/MainController.h"
 #include "../Commands/BaseCommand.h"
 #include "../Commands/CreateDirectoryCommand.h"
 #include "../Commands/DeleteCommand.h"
@@ -12,10 +13,12 @@
 
 using namespace Server;
 
+Server::Factories::CommandFactory::CommandFactory() {}
+
 Factories::CommandFactory::CommandFactory(const std::shared_ptr<Controllers::MainController> main)
 {
 	_commands.insert(std::make_pair(Enums::CommandEnum::CREATE_DIRECTORY, std::make_unique<Commands::CreateDirectoryCommand>(main)));
-	_commands.insert(std::make_pair(Enums::CommandEnum::DELETE, std::make_unique<Commands::DeleteCommand>(main)));
+	_commands.insert(std::make_pair(Enums::CommandEnum::DELETE_ITEM, std::make_unique<Commands::DeleteCommand>(main)));
 	_commands.insert(std::make_pair(Enums::CommandEnum::DISCONNECT, std::make_unique<Commands::DisconnectCommand>(main)));
 	_commands.insert(std::make_pair(Enums::CommandEnum::DOWNLOAD_FILE, std::make_unique<Commands::DownloadFileCommand>(main)));
 	_commands.insert(std::make_pair(Enums::CommandEnum::GET_DIRECTORY_LISTING, std::make_unique<Commands::GetDirectoryListingCommand>(main)));

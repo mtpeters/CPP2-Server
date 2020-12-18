@@ -4,7 +4,7 @@ namespace Server {
 	namespace Enums {
 		enum class CommandEnum {
 			CREATE_DIRECTORY,
-			DELETE,
+			DELETE_ITEM,
 			DISCONNECT,
 			DOWNLOAD_FILE,
 			GET_DIRECTORY_LISTING,

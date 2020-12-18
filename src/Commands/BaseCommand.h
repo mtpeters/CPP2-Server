@@ -1,8 +1,17 @@
 #pragma once
 #include <memory>
-#include "../Controllers/MainController.h"
+#include <string>
+#include <vector>
+#include <iostream>
+#include <cstdlib>
+#include <stdexcept>
+#include <asio.hpp>
 
 namespace Server {
+	namespace Controllers {
+		class MainController;
+	}
+
 	namespace Commands {
 		class BaseCommand {
 		protected:
@@ -10,7 +19,7 @@ namespace Server {
 		public:
 			BaseCommand(std::shared_ptr<Controllers::MainController> main) : _main{ main } {};
 
-			virtual void execute() = 0;
+			virtual void execute(asio::ip::tcp::iostream&, const std::string& = "") = 0;
 		};
 	}
 }

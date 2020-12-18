@@ -7,7 +7,7 @@ namespace Server {
 		public:
 			SyncDirectoryCommand(std::shared_ptr<Controllers::MainController>);
 
-			void execute();
+			void execute(asio::ip::tcp::iostream&, const std::string & = "");
 		};
 	}
 }
