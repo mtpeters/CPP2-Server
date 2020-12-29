@@ -10,42 +10,51 @@ Server::Commands::GetDirectoryListingCommand::GetDirectoryListingCommand(std::sh
 
 void Server::Commands::GetDirectoryListingCommand::execute(asio::ip::tcp::iostream& stream, const std::string& path)
 {
-	std::filesystem::path p(path.substr(1, path.length()));
-	std::string type;
+	const char* crlf{ "\r\n" };
+	std::filesystem::path p = "";
 
-	for (const auto& entry : std::filesystem::directory_iterator(p)) {
-		if (entry.is_directory()) {
-			type = "D";
-		}
-		else if (entry.is_regular_file()) {
-			type = "F";
-		}
-		else {
-			type = "*";
-		}
-
-		std::time_t last_time = to_time_t<decltype(entry.last_write_time())>(entry.last_write_time());
-
-		int year = (last_time / 31556926);
-		int rest = last_time - (year * 31556926);
-		int month = (rest / 2629743);
-		rest = rest - (month * 2629743);
-		int day = rest / 86400;
-		rest = rest - (day * 86400);
-		int hour = rest / 3600;
-		rest = rest - (hour * 3600);
-		int min = rest / 60;
-		rest = rest - (min * 60);
-		int sec = rest;
-
-		
-		auto size = entry.file_size();
-		std::string name = entry.path().filename().string();
-		std::string time = std::to_string(day + 1) + "-" + std::to_string(month + 1) + "-" + std::to_string(year + 1970) +  + " " + std::to_string(hour) + "-" + std::to_string(min) + "-" + std::to_string(sec);
-
-		stream << type << "|" << name << "|" << time << "|" << size << " ";
+	if (path.front() == '"' && path.back() == '"') {
+		//p = stripQuotedString(path);
+	}
+	else {
+		p = (path.substr(0, path.length()));
 	}
 
-	stream << "\r\n";
-}
+	std::string type;
 
+
+	if (!std::filesystem::exists(p)) {
+		stream << "Error: no such directory" << "\r\n";
+		return;
+	}
+
+	std::ostringstream oss;
+	try {
+		for (const auto& entry : std::filesystem::directory_iterator(p)) {
+			if (entry.is_directory()) {
+				type = "D";
+			}
+			else if (entry.is_regular_file()) {
+				type = "F";
+			}
+			else {
+				type = "*";
+			}
+
+			std::time_t last_time = to_time_t<decltype(entry.last_write_time())>(entry.last_write_time());
+			std::tm* tmObj{ std::localtime(&last_time) };
+
+			std::string time = std::to_string(tmObj->tm_mday) + "-" + std::to_string(tmObj->tm_mon) + "-" + std::to_string(tmObj->tm_year + 1900) + +" " + std::to_string(tmObj->tm_hour) + "-" + std::to_string(tmObj->tm_min) + "-" + std::to_string(tmObj->tm_sec);
+
+			auto size = entry.file_size();
+			std::string name = entry.path().filename().string();
+
+			oss << type << "|" << name << "|" << time << "|" << size << "\r\n";
+		}
+
+		stream << (oss.str());
+	}
+	catch (...) {
+		stream << "Error: something went wrong while reading the files" << "\r\n";
+	}
+}

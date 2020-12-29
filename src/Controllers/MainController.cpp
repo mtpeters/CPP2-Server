@@ -9,18 +9,6 @@ using namespace Server;
 
 Controllers::MainController::MainController() {}
 
-void Controllers::MainController::processCommand(const std::string& command, const std::string& path)
-{
-	if (command == "info") {
-		_factory.get_command(Enums::CommandEnum::GET_SERVER_INFO)->execute(_client);
-	} else if (command == "dir") {
-		_factory.get_command(Enums::CommandEnum::GET_DIRECTORY_LISTING)->execute(_client, path);
-	}
-    else if (command == "disconnect") {
-        _factory.get_command(Enums::CommandEnum::DISCONNECT)->execute(_client);
-    }
-}
-
 void Server::Controllers::MainController::run()
 {
     _factory = { shared_from_this() };
@@ -43,12 +31,53 @@ void Server::Controllers::MainController::run()
             request.erase(request.end() - 1); // remove '\r'
             std::cerr << "client says: " << request << lf;
 
-            
-            processCommand(request.substr(0, request.find(" ")), request.substr(3, request.length()));
+            std::string cmd = "";
+            std::string rest = "";
 
+            try {
+                cmd = request.substr(0, request.find(" "));
+                rest = request.substr(request.find(" ") + 1, request.length());
+            }
+            catch (const std::exception& e) {
+            }
+
+            if (cmd == "") {
+                cmd = request;
+            }
+
+            processCommand(cmd, rest);
+            
             if (request == "disconnect") {
                 break;
             }
         }
+    }
+}
+
+void Controllers::MainController::processCommand(const std::string& command, const std::string& path)
+{
+    if (command == "info") {
+        _factory.get_command(Enums::CommandEnum::GET_SERVER_INFO)->execute(_client);
+    }
+    else if (command == "dir") {
+        _factory.get_command(Enums::CommandEnum::GET_DIRECTORY_LISTING)->execute(_client, path);
+    }
+    else if (command == "disconnect") {
+        _factory.get_command(Enums::CommandEnum::DISCONNECT)->execute(_client);
+    }
+    else if (command == "download") {
+        _factory.get_command(Enums::CommandEnum::DOWNLOAD_FILE)->execute(_client, path);
+    }
+    else if (command == "rename") {
+        _factory.get_command(Enums::CommandEnum::RENAME)->execute(_client, path);
+    }
+    else if (command == "remove") {
+        _factory.get_command(Enums::CommandEnum::DELETE_ITEM)->execute(_client, path);
+    }
+    else if (command == "create") {
+        _factory.get_command(Enums::CommandEnum::CREATE_DIRECTORY)->execute(_client, path);
+    }
+    else {
+        _client << "Invalid Command" << "\r\n";
     }
 }
