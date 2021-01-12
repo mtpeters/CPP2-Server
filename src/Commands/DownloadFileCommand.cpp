@@ -7,33 +7,28 @@ Server::Commands::DownloadFileCommand::DownloadFileCommand(std::shared_ptr<Contr
 {
 }
 
-void Server::Commands::DownloadFileCommand::execute(asio::ip::tcp::iostream& stream, const std::string& path)
+void Server::Commands::DownloadFileCommand::execute(asio::ip::tcp::iostream& stream)
 {
-	const char* crlf{ "\r\n" };
-
-	std::filesystem::path p(path.substr(0, path.length()));
+	stream << "please enter the path" << crlf;
+	std::string path;
+	getline(stream, path);
+	path.erase(path.end() - 1);
 	
-	if (!std::filesystem::exists(p)) {
-		stream << "Error: no such file" << "\r\n";
+	if (!std::filesystem::exists(path) || std::filesystem::is_directory(path)) {
+		stream << "Error: no such file" << crlf;
 		return;
 	}
 
-	//auto bytes = std::filesystem::file_size(p);
-	//stream << "File has " << bytes << " bytes" << "\r\n";
-
-	std::ifstream input(p, std::ios::binary);
-	if (input.good()) {
-
-		std::ofstream output("C:\\myfile.gif", std::ios::binary);
-
-		std::copy(
-			std::istreambuf_iterator<char>(input),
-			std::istreambuf_iterator<char>(),
-			std::ostreambuf_iterator<char>(output));
+	if (std::filesystem::status(path).permissions() != std::filesystem::perms::all) {
+		stream << "Error: no permission" << crlf;
+		return;
 	}
-	else {
-		stream << "Error: Cannot read file" << "\r\n";
-	}
+
+	auto bytes = std::filesystem::file_size(path);
+	stream << bytes << crlf;
+	
+	std::ifstream input(path, std::ios::binary);
+	stream << input.rdbuf() << crlf;
 
 	return;
 }

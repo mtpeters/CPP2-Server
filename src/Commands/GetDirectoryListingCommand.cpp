@@ -8,29 +8,23 @@ Server::Commands::GetDirectoryListingCommand::GetDirectoryListingCommand(std::sh
 {
 }
 
-void Server::Commands::GetDirectoryListingCommand::execute(asio::ip::tcp::iostream& stream, const std::string& path)
+void Server::Commands::GetDirectoryListingCommand::execute(asio::ip::tcp::iostream& stream)
 {
-	const char* crlf{ "\r\n" };
-	std::filesystem::path p = "";
+	stream << "please enter the path" << crlf;
+	std::string path;
+	getline(stream, path);
+	path.erase(path.end() - 1);
 
-	if (path.front() == '"' && path.back() == '"') {
-		//p = stripQuotedString(path);
-	}
-	else {
-		p = (path.substr(0, path.length()));
-	}
-
-	std::string type;
-
-
-	if (!std::filesystem::exists(p)) {
-		stream << "Error: no such directory" << "\r\n";
+	if (!std::filesystem::exists(path) || !std::filesystem::is_directory(path)) {
+		stream << "Error: no such directory" << crlf;
 		return;
 	}
-
+	
+	int counter = 0;
+	std::string type;
 	std::ostringstream oss;
 	try {
-		for (const auto& entry : std::filesystem::directory_iterator(p)) {
+		for (const auto& entry : std::filesystem::directory_iterator(path)) {
 			if (entry.is_directory()) {
 				type = "D";
 			}
@@ -49,12 +43,15 @@ void Server::Commands::GetDirectoryListingCommand::execute(asio::ip::tcp::iostre
 			auto size = entry.file_size();
 			std::string name = entry.path().filename().string();
 
-			oss << type << "|" << name << "|" << time << "|" << size << "\r\n";
+			oss << type << "|" << name << "|" << time << "|" << size << crlf;
+			counter++;
 		}
 
-		stream << (oss.str());
+		stream << counter << crlf;
+		stream << oss.str();
+
 	}
 	catch (...) {
-		stream << "Error: something went wrong while reading the files" << "\r\n";
+		stream << "Error: something went wrong while reading the files" << crlf;
 	}
 }

@@ -6,25 +6,29 @@ Server::Commands::CreateDirectoryCommand::CreateDirectoryCommand(std::shared_ptr
 {
 }
 
-void Server::Commands::CreateDirectoryCommand::execute(asio::ip::tcp::iostream& stream, const std::string& path)
+void Server::Commands::CreateDirectoryCommand::execute(asio::ip::tcp::iostream& stream)
 {
-	std::filesystem::path p(path.substr(0, path.find(" ")));
-	std::string existing = path.substr(path.find(" ") + 1, path.length());
+	stream << "please enter the parent dir" << crlf;
+	std::string path;
+	getline(stream, path);
+	path.erase(path.end() - 1);
 
-	if (!std::filesystem::exists(existing)) {
+	if (!std::filesystem::exists(path)) {
 		stream << "Error: no such file or directory" << "\r\n";
 		return;
 	}
 
-	auto dir = std::filesystem::directory_entry(existing);
-	auto per = dir.status().permissions();
-
-	if (per != std::filesystem::perms::all) {
-		stream << "Error: Error: no permission" << "\r\n";
+	if (std::filesystem::status(path).permissions() != std::filesystem::perms::all) {
+		stream << "Error: no permission" << crlf;
 		return;
 	}
 
-	std::filesystem::create_directory(p, existing);
+	stream << "please enter the dir name" << crlf;
+	std::string name;
+	getline(stream, name);
+	name.erase(name.end() - 1);
+
+	std::filesystem::create_directory(path + "/" + name, path);
 
 	stream << "OK" << "\r\n";
 }

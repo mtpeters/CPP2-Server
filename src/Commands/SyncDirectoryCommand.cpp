@@ -5,6 +5,9 @@ Server::Commands::SyncDirectoryCommand::SyncDirectoryCommand(std::shared_ptr<Con
 {
 }
 
-void Server::Commands::SyncDirectoryCommand::execute(asio::ip::tcp::iostream&, const std::string&)
+void Server::Commands::SyncDirectoryCommand::execute(asio::ip::tcp::iostream& stream)
 {
+	std::string path;
+	getline(stream, path);
+
 }

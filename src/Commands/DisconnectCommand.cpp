@@ -5,8 +5,9 @@ Server::Commands::DisconnectCommand::DisconnectCommand(std::shared_ptr<Controlle
 {
 }
 
-void Server::Commands::DisconnectCommand::execute(asio::ip::tcp::iostream& stream, const std::string&)
+void Server::Commands::DisconnectCommand::execute(asio::ip::tcp::iostream& stream)
 {
-	stream << "Bye." << "\r\n";
-	std::cerr << "will disconnect from client " << stream.socket().local_endpoint() << "\n";
+	stream << "Bye." << crlf;
+	std::cerr << "will disconnect from client " << stream.socket().local_endpoint() << crlf;
+	stream.socket().close();
 }

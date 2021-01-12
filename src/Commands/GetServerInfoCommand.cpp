@@ -5,7 +5,7 @@ Server::Commands::GetServerInfoCommand::GetServerInfoCommand(std::shared_ptr<Con
 {
 }
 
-void Server::Commands::GetServerInfoCommand::execute(asio::ip::tcp::iostream& client, const std::string&)
+void Server::Commands::GetServerInfoCommand::execute(asio::ip::tcp::iostream& client)
 {
 	client << "Macksly's server 1.0, copyright (c) 2020 Max Peters" << "\r\n";
 }

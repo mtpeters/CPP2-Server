@@ -15,11 +15,12 @@ namespace Server {
 	namespace Commands {
 		class BaseCommand {
 		protected:
+			const char* crlf{ "\r\n" };
 			std::shared_ptr<Controllers::MainController> _main;
 		public:
 			BaseCommand(std::shared_ptr<Controllers::MainController> main) : _main{ main } {};
 
-			virtual void execute(asio::ip::tcp::iostream&, const std::string& = "") = 0;
+			virtual void execute(asio::ip::tcp::iostream&) = 0;
 
 			int nthOccurrence(const std::string& str, const char findMe, int nth)
 			{

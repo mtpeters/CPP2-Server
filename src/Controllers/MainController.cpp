@@ -31,51 +31,40 @@ void Server::Controllers::MainController::run()
             request.erase(request.end() - 1); // remove '\r'
             std::cerr << "client says: " << request << lf;
 
-            std::string cmd = "";
-            std::string rest = "";
-
-            try {
-                cmd = request.substr(0, request.find(" "));
-                rest = request.substr(request.find(" ") + 1, request.length());
-            }
-            catch (const std::exception& e) {
-            }
-
-            if (cmd == "") {
-                cmd = request;
-            }
-
-            processCommand(cmd, rest);
+            processCommand(request);
             
-            if (request == "disconnect") {
+            if (request == "QUIT") { 
                 break;
             }
         }
     }
 }
 
-void Controllers::MainController::processCommand(const std::string& command, const std::string& path)
+void Controllers::MainController::processCommand(const std::string& command)
 {
-    if (command == "info") {
+    if (command == "INFO") {
         _factory.get_command(Enums::CommandEnum::GET_SERVER_INFO)->execute(_client);
     }
-    else if (command == "dir") {
-        _factory.get_command(Enums::CommandEnum::GET_DIRECTORY_LISTING)->execute(_client, path);
+    else if (command == "DIR") {
+        _factory.get_command(Enums::CommandEnum::GET_DIRECTORY_LISTING)->execute(_client);
     }
-    else if (command == "disconnect") {
+    else if (command == "QUIT") {
         _factory.get_command(Enums::CommandEnum::DISCONNECT)->execute(_client);
     }
-    else if (command == "download") {
-        _factory.get_command(Enums::CommandEnum::DOWNLOAD_FILE)->execute(_client, path);
+    else if (command == "GET") {
+        _factory.get_command(Enums::CommandEnum::DOWNLOAD_FILE)->execute(_client);
     }
-    else if (command == "rename") {
-        _factory.get_command(Enums::CommandEnum::RENAME)->execute(_client, path);
+    else if (command == "PUT") {
+        _factory.get_command(Enums::CommandEnum::UPLOAD_FILE)->execute(_client);
     }
-    else if (command == "remove") {
-        _factory.get_command(Enums::CommandEnum::DELETE_ITEM)->execute(_client, path);
+    else if (command == "REN") {
+        _factory.get_command(Enums::CommandEnum::RENAME)->execute(_client);
     }
-    else if (command == "create") {
-        _factory.get_command(Enums::CommandEnum::CREATE_DIRECTORY)->execute(_client, path);
+    else if (command == "DEL") {
+        _factory.get_command(Enums::CommandEnum::DELETE_ITEM)->execute(_client);
+    }
+    else if (command == "MKDIR") {
+        _factory.get_command(Enums::CommandEnum::CREATE_DIRECTORY)->execute(_client);
     }
     else {
         _client << "Invalid Command" << "\r\n";
