@@ -24,11 +24,25 @@ void Server::Commands::DownloadFileCommand::execute(asio::ip::tcp::iostream& str
 		return;
 	}
 
-	auto bytes = std::filesystem::file_size(path);
-	stream << bytes << crlf;
-	
-	std::ifstream input(path, std::ios::binary);
-	stream << input.rdbuf() << crlf;
+	std::ifstream input(path, std::ifstream::binary | std::ios::in);
 
-	return;
+	if (input) {
+		input.seekg(0, input.end);
+		int length = input.tellg();
+		input.seekg(0, input.beg);
+
+		char* buffer = new char[length];
+
+		input.read(buffer, length);
+		input.close();
+
+		stream << length << "\n";
+
+		stream.write(buffer, length);
+
+		stream << "OK" << crlf;
+	}
+	else {
+		stream << "ERROR: Cannot download file" << crlf;
+	}
 }

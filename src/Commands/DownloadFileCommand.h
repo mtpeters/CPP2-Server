@@ -8,6 +8,7 @@ namespace Server {
 			DownloadFileCommand(std::shared_ptr<Controllers::MainController>);
 
 			void execute(asio::ip::tcp::iostream&);
+
 		};
 	}
 }
