@@ -12,11 +12,13 @@ void Server::Commands::UploadFileCommand::execute(asio::ip::tcp::iostream& strea
     // get path
 	std::string path;
     getline(stream, path);
-    std::cerr << "client - name: " << path << '\n';
+    path = _root + path;
+    std::cerr << "client says: " << path << lf;
 
     // get bytes
     std::string val;
     getline(stream, val);
+    std::cerr << "client says: " << val << lf;
 
     // get buffer
     int bytes = std::stoi(val);
@@ -28,7 +30,7 @@ void Server::Commands::UploadFileCommand::execute(asio::ip::tcp::iostream& strea
     }
 
     if (stream.read(buffer.get(), bytes)) {
-        std::ofstream out(_root + path, std::ofstream::binary);
+        std::ofstream out(path, std::ofstream::binary);
         out.write(buffer.get(), bytes);
         out.close();
 

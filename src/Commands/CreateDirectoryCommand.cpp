@@ -13,6 +13,7 @@ void Server::Commands::CreateDirectoryCommand::execute(asio::ip::tcp::iostream& 
 	getline(stream, path);
 	path.erase(path.end() - 1);
 	path = _root + path;
+	std::cerr << "client says: " << path << lf;
 
 	if (!std::filesystem::exists(path)) {
 		stream << "Error: no such file or directory" << crlf;
@@ -28,6 +29,7 @@ void Server::Commands::CreateDirectoryCommand::execute(asio::ip::tcp::iostream& 
 	std::string name;
 	getline(stream, name);
 	name.erase(name.end() - 1);
+	std::cerr << "client says: " << name << lf;
 
 	if (std::filesystem::exists(path + "/" + name)) {
 		stream << "Already exists" << crlf;

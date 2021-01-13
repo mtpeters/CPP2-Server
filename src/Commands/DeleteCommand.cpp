@@ -13,6 +13,7 @@ void Server::Commands::DeleteCommand::execute(asio::ip::tcp::iostream& stream)
 	getline(stream, path);
 	path.erase(path.end() - 1);
 	path = _root + path;
+	std::cerr << "client says: " << path << lf;
 
 	if (!std::filesystem::exists(path)) {
 		stream << "ERROR: no such file" << crlf;

@@ -15,6 +15,7 @@ void Server::Commands::GetDirectoryListingCommand::execute(asio::ip::tcp::iostre
 	getline(stream, path);
 	path.erase(path.end() - 1);
 	path = _root + path;
+	std::cerr << "client says: " << path << lf;
 
 	if (!std::filesystem::exists(path) || !std::filesystem::is_directory(path)) {
 		stream << "ERROR: no such directory" << crlf;

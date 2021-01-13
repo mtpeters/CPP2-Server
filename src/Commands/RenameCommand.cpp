@@ -14,7 +14,8 @@ void Server::Commands::RenameCommand::execute(asio::ip::tcp::iostream& stream)
 	getline(stream, path);
 	path.erase(path.end() - 1);
 	path = _root + path;
-	
+	std::cerr << "client says: " << path << lf;
+
 	if (!std::filesystem::exists(path)) {
 		stream << "ERROR: no such file or directory" << crlf;
 		return;
@@ -29,6 +30,7 @@ void Server::Commands::RenameCommand::execute(asio::ip::tcp::iostream& stream)
 	std::string name;
 	getline(stream, name);
 	name.erase(name.end() - 1);
+	std::cerr << "client says: " << name << lf;
 
 	std::filesystem::rename(path, std::filesystem::path(path).parent_path().append(name));
 
