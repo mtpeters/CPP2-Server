@@ -29,6 +29,11 @@ void Server::Commands::CreateDirectoryCommand::execute(asio::ip::tcp::iostream& 
 	getline(stream, name);
 	name.erase(name.end() - 1);
 
+	if (std::filesystem::exists(path + "/" + name)) {
+		stream << "Already exists" << crlf;
+		return;
+	}
+
 	std::filesystem::create_directory(path + "/" + name, path);
 
 	stream << "OK" << crlf;
