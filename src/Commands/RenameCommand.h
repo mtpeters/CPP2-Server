@@ -5,7 +5,7 @@ namespace Server {
 	namespace Commands {
 		class RenameCommand : public BaseCommand {
 		public:
-			RenameCommand(std::shared_ptr<Controllers::MainController>);
+			RenameCommand(const std::string root);
 
 			void execute(asio::ip::tcp::iostream&);
 		};

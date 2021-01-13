@@ -10,7 +10,6 @@ namespace Server {
 			GET_DIRECTORY_LISTING,
 			GET_SERVER_INFO,
 			RENAME,
-			SYNC_DIRECTORY,
 			UPLOAD_FILE
 		};
 	}

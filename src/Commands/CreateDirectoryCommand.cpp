@@ -2,16 +2,17 @@
 #include "../Controllers/MainController.h"
 #include <filesystem>
 
-Server::Commands::CreateDirectoryCommand::CreateDirectoryCommand(std::shared_ptr<Controllers::MainController> main) : BaseCommand{main}
+Server::Commands::CreateDirectoryCommand::CreateDirectoryCommand(const std::string root) : BaseCommand{root}
 {
 }
 
 void Server::Commands::CreateDirectoryCommand::execute(asio::ip::tcp::iostream& stream)
 {
-	stream << "please enter the parent dir" << crlf;
+	stream << "please enter the parent dir (Empty for root)" << crlf;
 	std::string path;
 	getline(stream, path);
 	path.erase(path.end() - 1);
+	path = _root + path;
 
 	if (!std::filesystem::exists(path)) {
 		stream << "Error: no such file or directory" << "\r\n";
@@ -23,12 +24,12 @@ void Server::Commands::CreateDirectoryCommand::execute(asio::ip::tcp::iostream& 
 		return;
 	}
 
-	stream << "please enter the dir name" << crlf;
+	stream << "Please enter the dir name" << crlf;
 	std::string name;
 	getline(stream, name);
 	name.erase(name.end() - 1);
 
 	std::filesystem::create_directory(path + "/" + name, path);
 
-	stream << "OK" << "\r\n";
+	stream << "OK" << crlf;
 }

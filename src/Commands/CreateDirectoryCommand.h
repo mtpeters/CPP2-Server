@@ -5,7 +5,7 @@ namespace Server {
 	namespace Commands {
 		class CreateDirectoryCommand : public BaseCommand {
 		public:
-			CreateDirectoryCommand(std::shared_ptr<Controllers::MainController>);
+			CreateDirectoryCommand(const std::string root);
 
 			void execute(asio::ip::tcp::iostream&);
 		};

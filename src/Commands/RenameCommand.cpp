@@ -3,17 +3,18 @@
 #include <filesystem>
 #include <fstream>
 
-Server::Commands::RenameCommand::RenameCommand(std::shared_ptr<Controllers::MainController> main) : BaseCommand{ main }
+Server::Commands::RenameCommand::RenameCommand(const std::string root) : BaseCommand{ root }
 {
 }
 
 void Server::Commands::RenameCommand::execute(asio::ip::tcp::iostream& stream)
 {
-	stream << "please enter the path" << crlf;
+	stream << "Please enter the path" << crlf;
 	std::string path;
 	getline(stream, path);
 	path.erase(path.end() - 1);
-
+	path = _root + path;
+	
 	if (!std::filesystem::exists(path)) {
 		stream << "Error: no such file or directory" << "\r\n";
 		return;
@@ -24,7 +25,7 @@ void Server::Commands::RenameCommand::execute(asio::ip::tcp::iostream& stream)
 		return;
 	}
 
-	stream << "please enter the new name" << crlf;
+	stream << "Please enter the new name" << crlf;
 	std::string name;
 	getline(stream, name);
 	name.erase(name.end() - 1);

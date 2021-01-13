@@ -26,7 +26,6 @@
     <ClCompile Include="src\Commands\GetDirectoryListingCommand.cpp" />
     <ClCompile Include="src\Commands\GetServerInfoCommand.cpp" />
     <ClCompile Include="src\Commands\RenameCommand.cpp" />
-    <ClCompile Include="src\Commands\SyncDirectoryCommand.cpp" />
     <ClCompile Include="src\Commands\UploadFileCommand.cpp" />
     <ClCompile Include="src\Controllers\MainController.cpp" />
     <ClCompile Include="src\Factories\CommandFactory.cpp" />
@@ -43,7 +42,6 @@
     <ClInclude Include="src\Commands\GetDirectoryListingCommand.h" />
     <ClInclude Include="src\Commands\GetServerInfoCommand.h" />
     <ClInclude Include="src\Commands\RenameCommand.h" />
-    <ClInclude Include="src\Commands\SyncDirectoryCommand.h" />
     <ClInclude Include="src\Commands\UploadFileCommand.h" />
     <ClInclude Include="src\Controllers\MainController.h" />
   </ItemGroup>

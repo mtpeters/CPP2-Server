@@ -11,8 +11,7 @@ namespace Server {
 			std::map<Enums::CommandEnum, std::unique_ptr<Commands::BaseCommand>> _commands;
 
 		public:
-			CommandFactory();
-			CommandFactory(std::shared_ptr<Controllers::MainController>);
+			CommandFactory(const std::string&);
 
 			const std::unique_ptr<Commands::BaseCommand>& get_command(Enums::CommandEnum) const;
 		};

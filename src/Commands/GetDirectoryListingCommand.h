@@ -7,7 +7,7 @@ namespace Server {
 	namespace Commands {
 		class GetDirectoryListingCommand : public BaseCommand {
 		public:
-			GetDirectoryListingCommand(std::shared_ptr<Controllers::MainController>);
+			GetDirectoryListingCommand(const std::string root);
 
 			void execute(asio::ip::tcp::iostream&);
 		private:

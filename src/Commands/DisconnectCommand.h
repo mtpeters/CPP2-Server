@@ -5,7 +5,7 @@ namespace Server {
 	namespace Commands {
 		class DisconnectCommand : public BaseCommand {
 		public:
-			DisconnectCommand(std::shared_ptr<Controllers::MainController>);
+			DisconnectCommand(const std::string root);
 
 			void execute(asio::ip::tcp::iostream&);
 		};

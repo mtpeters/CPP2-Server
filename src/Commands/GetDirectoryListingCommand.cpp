@@ -4,16 +4,17 @@
 #include <time.h>
 
 
-Server::Commands::GetDirectoryListingCommand::GetDirectoryListingCommand(std::shared_ptr<Controllers::MainController> main) : BaseCommand{ main }
+Server::Commands::GetDirectoryListingCommand::GetDirectoryListingCommand(const std::string root) : BaseCommand{ root }
 {
 }
 
 void Server::Commands::GetDirectoryListingCommand::execute(asio::ip::tcp::iostream& stream)
 {
-	stream << "please enter the path" << crlf;
+	stream << "Please enter the path" << crlf;
 	std::string path;
 	getline(stream, path);
 	path.erase(path.end() - 1);
+	path = _root + path;
 
 	if (!std::filesystem::exists(path) || !std::filesystem::is_directory(path)) {
 		stream << "Error: no such directory" << crlf;
@@ -36,20 +37,20 @@ void Server::Commands::GetDirectoryListingCommand::execute(asio::ip::tcp::iostre
 			}
 
 			std::time_t last_time = to_time_t<decltype(entry.last_write_time())>(entry.last_write_time());
-			std::tm* tmObj{ std::localtime(&last_time) };
 
-			std::string time = std::to_string(tmObj->tm_mday) + "-" + std::to_string(tmObj->tm_mon) + "-" + std::to_string(tmObj->tm_year + 1900) + +" " + std::to_string(tmObj->tm_hour) + "-" + std::to_string(tmObj->tm_min) + "-" + std::to_string(tmObj->tm_sec);
+			std::stringstream ss;
+			ss << std::put_time(std::localtime(&last_time), "%Y-%m-%d %H:%M:%S");
 
 			auto size = entry.file_size();
 			std::string name = entry.path().filename().string();
 
-			oss << type << "|" << name << "|" << time << "|" << size << crlf;
+			oss << type << "|" << name << "|" << ss.str() << "|" << size << crlf;
 			counter++;
 		}
 
 		stream << counter << crlf;
 		stream << oss.str();
-
+		stream << "OK" << crlf;
 	}
 	catch (...) {
 		stream << "Error: something went wrong while reading the files" << crlf;

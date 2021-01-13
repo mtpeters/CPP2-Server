@@ -5,7 +5,7 @@ namespace Server {
 	namespace Commands {
 		class DownloadFileCommand : public BaseCommand {
 		public:
-			DownloadFileCommand(std::shared_ptr<Controllers::MainController>);
+			DownloadFileCommand(const std::string root);
 
 			void execute(asio::ip::tcp::iostream&);
 

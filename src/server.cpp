@@ -1,8 +1,12 @@
-//
-// server.cpp
-//
-// Created by Bob Polis at 2020-12-02
-//
+#define _CRTDBG_MAP_ALLOC
+#include <cstdlib>
+#include <crtdbg.h>
+
+#ifdef _DEBUG
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#else
+#define DBG_NEW new
+#endif
 
 #include <iostream>
 #include <cstdlib>
@@ -13,8 +17,8 @@
 
 int main() {
     try {
-        std::shared_ptr<Server::Controllers::MainController> _main = std::make_shared<Server::Controllers::MainController>();
-        _main->run();
+        Server::Controllers::MainController _main;
+        _main.run();
         return EXIT_SUCCESS;
     }
     catch (const std::exception& ex) {
@@ -23,5 +27,7 @@ int main() {
     catch (...) {
         std::cerr << "Unknown Error" << '\n';
     }
+
+    _CrtDumpMemoryLeaks();
     return EXIT_FAILURE;
 }

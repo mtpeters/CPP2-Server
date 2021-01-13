@@ -5,7 +5,7 @@ namespace Server {
 	namespace Commands {
 		class DeleteCommand : public BaseCommand {
 		public:
-			DeleteCommand(std::shared_ptr<Controllers::MainController>);
+			DeleteCommand(const std::string root);
 
 			void execute(asio::ip::tcp::iostream&);
 		};

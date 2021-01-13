@@ -39,9 +39,6 @@
     <ClCompile Include="src\Commands\RenameCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Commands\SyncDirectoryCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Commands\UploadFileCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,9 +78,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Commands\RenameCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Commands\SyncDirectoryCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Commands\UploadFileCommand.h">

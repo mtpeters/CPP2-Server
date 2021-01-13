@@ -7,15 +7,10 @@
 
 using namespace Server;
 
-Controllers::MainController::MainController() {}
+Controllers::MainController::MainController() : _factory{"d:/server/"} {}
 
 void Server::Controllers::MainController::run()
 {
-    _factory = { shared_from_this() };
-    const int server_port{ 12345 };
-    const char* lf{ "\n" };
-    const char* crlf{ "\r\n" };
-
     asio::io_context io_context;
     asio::ip::tcp::acceptor server{ io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), server_port) };
 
@@ -31,7 +26,14 @@ void Server::Controllers::MainController::run()
             request.erase(request.end() - 1); // remove '\r'
             std::cerr << "client says: " << request << lf;
 
-            processCommand(request);
+            try {
+                processCommand(request);
+            }
+            catch (const std::exception& e) {
+                std::cerr << e.what() << crlf;
+                _client << e.what() << crlf;
+            }
+
             
             if (request == "QUIT") { 
                 break;
@@ -67,6 +69,6 @@ void Controllers::MainController::processCommand(const std::string& command)
         _factory.get_command(Enums::CommandEnum::CREATE_DIRECTORY)->execute(_client);
     }
     else {
-        _client << "Invalid Command" << "\r\n";
+        _client << "ERROR: Invalid Command" << "\r\n";
     }
 }
