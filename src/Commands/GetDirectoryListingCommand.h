@@ -7,7 +7,7 @@ namespace Server {
 	namespace Commands {
 		class GetDirectoryListingCommand : public BaseCommand {
 		public:
-			GetDirectoryListingCommand(const std::string root);
+			GetDirectoryListingCommand(const std::string& root);
 
 			void execute(asio::ip::tcp::iostream&);
 		private:

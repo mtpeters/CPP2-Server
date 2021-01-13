@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <fstream>
 
-Server::Commands::RenameCommand::RenameCommand(const std::string root) : BaseCommand{ root }
+Server::Commands::RenameCommand::RenameCommand(const std::string& root) : BaseCommand{ root }
 {
 }
 

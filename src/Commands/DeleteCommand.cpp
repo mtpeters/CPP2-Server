@@ -2,7 +2,7 @@
 #include "../Controllers/MainController.h"
 #include <filesystem>
 
-Server::Commands::DeleteCommand::DeleteCommand(const std::string root) : BaseCommand{ root }
+Server::Commands::DeleteCommand::DeleteCommand(const std::string& root) : BaseCommand{ root }
 {
 }
 

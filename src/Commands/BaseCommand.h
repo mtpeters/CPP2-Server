@@ -19,7 +19,7 @@ namespace Server {
 			const std::string lf{ "\n" };
 			const std::string _root;
 		public:
-			BaseCommand(const std::string root) : _root{ root } {};
+			BaseCommand(const std::string& root) : _root{ root } {};
 
 			virtual void execute(asio::ip::tcp::iostream&) = 0;
 		};

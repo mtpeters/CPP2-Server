@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <fstream>
 
-Server::Commands::UploadFileCommand::UploadFileCommand(const std::string root) : BaseCommand{ root }
+Server::Commands::UploadFileCommand::UploadFileCommand(const std::string& root) : BaseCommand{ root }
 {
 }
 

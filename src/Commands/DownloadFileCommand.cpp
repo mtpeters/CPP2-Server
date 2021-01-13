@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <fstream>
 
-Server::Commands::DownloadFileCommand::DownloadFileCommand(const std::string root) : BaseCommand{ root }
+Server::Commands::DownloadFileCommand::DownloadFileCommand(const std::string& root) : BaseCommand{ root }
 {
 }
 

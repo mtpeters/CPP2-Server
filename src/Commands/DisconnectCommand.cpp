@@ -1,7 +1,7 @@
 #include "DisconnectCommand.h"
 #include "../Controllers/MainController.h"
 
-Server::Commands::DisconnectCommand::DisconnectCommand(const std::string root) : BaseCommand{ root }
+Server::Commands::DisconnectCommand::DisconnectCommand(const std::string& root) : BaseCommand{ root }
 {
 }
 

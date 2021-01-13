@@ -1,7 +1,7 @@
 #include "GetServerInfoCommand.h"
 #include "../Controllers/MainController.h"
 
-Server::Commands::GetServerInfoCommand::GetServerInfoCommand(const std::string root) : BaseCommand{ root }
+Server::Commands::GetServerInfoCommand::GetServerInfoCommand(const std::string& root) : BaseCommand{ root }
 {
 }
 

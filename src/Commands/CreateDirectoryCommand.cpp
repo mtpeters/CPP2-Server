@@ -2,7 +2,7 @@
 #include "../Controllers/MainController.h"
 #include <filesystem>
 
-Server::Commands::CreateDirectoryCommand::CreateDirectoryCommand(const std::string root) : BaseCommand{root}
+Server::Commands::CreateDirectoryCommand::CreateDirectoryCommand(const std::string& root) : BaseCommand{root}
 {
 }
 

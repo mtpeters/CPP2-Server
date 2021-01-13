@@ -5,7 +5,7 @@ namespace Server {
 	namespace Commands {
 		class GetServerInfoCommand : public BaseCommand {
 		public:
-			GetServerInfoCommand(const std::string root);
+			GetServerInfoCommand(const std::string& root);
 
 			void execute(asio::ip::tcp::iostream&);
 		};

@@ -4,7 +4,7 @@
 #include <time.h>
 
 
-Server::Commands::GetDirectoryListingCommand::GetDirectoryListingCommand(const std::string root) : BaseCommand{ root }
+Server::Commands::GetDirectoryListingCommand::GetDirectoryListingCommand(const std::string& root) : BaseCommand{ root }
 {
 }
 
