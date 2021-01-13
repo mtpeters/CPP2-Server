@@ -16,11 +16,11 @@ void Server::Controllers::MainController::run()
 
     for (;;) {
         std::cerr << "waiting for client to connect\n";
-
+        _client = {};
         server.accept(_client.socket());
         std::cerr << "client connected from " << _client.socket().local_endpoint() << lf;
         _client << "Welcome to Macksly's server 1.0" << crlf;
-        for (;;) {
+        while (_client.socket().is_open()) {
             std::string request;
             getline(_client, request);
             request.erase(request.end() - 1); // remove '\r'
@@ -32,11 +32,6 @@ void Server::Controllers::MainController::run()
             catch (const std::exception& e) {
                 std::cerr << e.what() << crlf;
                 _client << e.what() << crlf;
-            }
-
-            
-            if (request == "QUIT") { 
-                break;
             }
         }
     }

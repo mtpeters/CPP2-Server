@@ -15,7 +15,7 @@ void Server::Commands::CreateDirectoryCommand::execute(asio::ip::tcp::iostream& 
 	path = _root + path;
 
 	if (!std::filesystem::exists(path)) {
-		stream << "Error: no such file or directory" << "\r\n";
+		stream << "Error: no such file or directory" << crlf;
 		return;
 	}
 

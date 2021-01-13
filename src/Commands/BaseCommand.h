@@ -16,6 +16,7 @@ namespace Server {
 		class BaseCommand {
 		protected:
 			const std::string crlf{ "\r\n" };
+			const std::string lf{ "\n" };
 			const std::string _root;
 		public:
 			BaseCommand(const std::string root) : _root{ root } {};

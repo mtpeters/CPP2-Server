@@ -35,5 +35,7 @@ void Server::Commands::UploadFileCommand::execute(asio::ip::tcp::iostream& strea
         stream << "OK" << crlf;
         return;
     }
-    stream << "ERROR: Something went wrong" << crlf;
+    else {
+        stream << "ERROR: Could not upload file" << crlf;
+    }
 }

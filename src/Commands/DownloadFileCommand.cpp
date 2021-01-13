@@ -35,7 +35,7 @@ void Server::Commands::DownloadFileCommand::execute(asio::ip::tcp::iostream& str
 		input.read(buffer.get(), length);
 		input.close();
 
-		stream << length << "\n";
+		stream << length << lf;
 
 		stream.write(buffer.get(), length);
 

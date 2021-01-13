@@ -16,12 +16,12 @@ void Server::Commands::RenameCommand::execute(asio::ip::tcp::iostream& stream)
 	path = _root + path;
 	
 	if (!std::filesystem::exists(path)) {
-		stream << "Error: no such file or directory" << "\r\n";
+		stream << "ERROR: no such file or directory" << crlf;
 		return;
 	}
 
 	if (std::filesystem::status(path).permissions() != std::filesystem::perms::all) {
-		stream << "Error: no permission" << crlf;
+		stream << "ERROR: no permission" << crlf;
 		return;
 	}
 
@@ -32,5 +32,5 @@ void Server::Commands::RenameCommand::execute(asio::ip::tcp::iostream& stream)
 
 	std::filesystem::rename(path, std::filesystem::path(path).parent_path().append(name));
 
-	stream << "OK" << "\r\n";
+	stream << "OK" << crlf;
 }
